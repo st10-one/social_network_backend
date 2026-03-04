@@ -7,7 +7,7 @@ import uvicorn
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
-    #await drop_table()
+   # await drop_table()
     #print("Очищення таблиць")
     await create_table()
     print("Підготовка бази данх")

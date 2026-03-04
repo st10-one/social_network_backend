@@ -1,6 +1,5 @@
-from fastapi import APIRouter
-
 from .routers import router
+from schemas import UsersSchema
 
 
-__all__ = ['router']
+__all__ = ['router', "UsersSchema"]

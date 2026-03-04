@@ -30,10 +30,8 @@ class AbstractRepository(ABC):
 
 class SQLRepository(AbstractRepository):
     def __init__(self):
-        with sqlite3.connect('/home/stipa/database/data.db', check_same_thread=False) as conn:
-            self.conn = conn
-            self.cursor = conn.cursor()
-
+        self.conn = sqlite3.connect('/home/stipa/database/data.db', check_same_thread=False)
+        self.cursor = self.conn.cursor()
 
 
     def add_user(self, data: UsersModel, content):
@@ -46,6 +44,7 @@ class SQLRepository(AbstractRepository):
         try:
             self.cursor.execute("INSERT INTO Users(first_name, last_name, username, bio, photo_profil) VALUES (?,?,?,?,?)", params)
             self.conn.commit()
+            return {"success": True}
         except sqlite3.Error, TypeError:
             self.conn.rollback()
             raise HTTPException(status_code=400, detail=f"user with this name exist\n")
@@ -69,6 +68,7 @@ class SQLRepository(AbstractRepository):
             self.cursor.execute(FOREIGN_KEY)
             self.cursor.execute("INSERT INTO Posts(user_id, content) VALUES (?,?)", params)
             self.conn.commit()
+            return {"id": data.user_id, "content": data.content}
         except sqlite3.Error, TypeError:
             self.conn.rollback()
             raise HTTPException(400, "bad request")
@@ -83,6 +83,7 @@ class SQLRepository(AbstractRepository):
             self.cursor.execute(FOREIGN_KEY)
             self.cursor.execute("INSERT INTO Likes(user_id, post_id) VALUES (?,?)", params)
             self.conn.commit()
+            return params
         except sqlite3.Error, TypeError:
             self.conn.rollback()
             raise HTTPException(400, "bad request")
