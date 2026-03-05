@@ -1,0 +1,23 @@
+from fastapi import APIRouter, Depends
+from service import UserService
+
+from dependency import usr_data_dep, file_data, priveleg_token
+
+router = APIRouter(prefix='/social')
+
+
+@router.post('/add_new', tags=['Users'])
+def add_users(user_data: usr_data_dep, Photo:file_data, user_service:UserService = Depends()): # type: ignore
+    return user_service.create_user(user_data, Photo)
+
+@router.get('/get_one_user/{username}', tags=['Users'])
+def get_one_user(username: str, user_service:UserService = Depends()):
+    return user_service.get_one_user(username=username)
+
+@router.put('/update_user', tags=['Users'])
+def update_user_data(user_id:int, new_data: usr_data_dep, user_service:UserService = Depends()):
+    return user_service.update_data(user_id, new_data)
+
+@router.delete("/delete_user/{user_id}", dependencies=[Depends(priveleg_token)], tags=["Users"])
+def delete_user(user_id: int, user_service:UserService = Depends()):
+    return user_service.delete_user(user_id)
