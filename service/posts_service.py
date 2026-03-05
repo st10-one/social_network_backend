@@ -1,12 +1,9 @@
 from utils import SQLRepository
-
-from fastapi import HTTPException
+from db import PostModel
 
 class PostService:
     def __init__(self):
         self.repo = SQLRepository()
 
-    def create_post(self, content):
-        if not content:
-            raise HTTPException(400, "bad request")
+    def create_post(self, content:PostModel) -> PostModel:
         return self.repo.add_posts(content)

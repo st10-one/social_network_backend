@@ -138,7 +138,11 @@ class SQLRepository(AbstractRepository):
             self.cursor.execute(FOREIGN_KEY)
             self.cursor.execute("INSERT INTO Likes(user_id, post_id) VALUES (?,?)", params)
             self.conn.commit()
-            return params
         except sqlite3.Error, TypeError:
             self.conn.rollback()
             raise HTTPException(400, "bad request")
+        
+        return {
+            'user_id': data.user_id,
+            "post_id": data.post_id
+        }

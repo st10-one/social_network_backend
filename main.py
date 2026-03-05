@@ -7,23 +7,23 @@ import uvicorn
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
-   # await drop_table()
-    #print("Очищення таблиць")
+    #await drop_table()
+    #print("clean table")
     await create_table()
-    print("Підготовка бази данх")
+    print("Database is ready for work!")
     yield 
 
 
 app = FastAPI(lifespan=lifespan, title="Web Social")
 
-@app.get("/", tags=["root"])
-def root():
-    return "Hello!"
 
 app.include_router(users.router)
 app.include_router(posts.router)
 app.include_router(likes.router)
 
+@app.get("/", tags=["root"])
+def root():
+    return "Hello!"
 
 if __name__ == "__main__":
     uvicorn.run("main:app")

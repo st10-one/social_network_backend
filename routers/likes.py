@@ -5,7 +5,10 @@ from service import LikeService
 
 router = APIRouter(prefix='/social')
 
-
-@router.post('/add_like', tags=["Like"])
+@router.post('/like', tags=["Like"])
 def add_like(like: LikesSchema = Depends(), like_service:LikeService = Depends()):
     return like_service.create_like(likes=like)
+
+@router.delete("/like", tags=['Like'])
+def delete_like(post_id:int):
+    return {"post_id": post_id}
