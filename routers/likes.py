@@ -10,5 +10,5 @@ def add_like(like: LikesSchema = Depends(), like_service:LikeService = Depends()
     return like_service.create_like(likes=like)
 
 @router.delete("/like", tags=['Like'])
-def delete_like(like: LikesSchema = Depends()):
-    return {"post_id": like}
+def delete_like(like: LikesSchema = Depends(), like_service:LikeService = Depends()):
+    return like_service.delete_like(like)
