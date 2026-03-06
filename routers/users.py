@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends
 from service import UserService
+from schemas import UsersSchema
 
 from dependency import usr_data_dep, file_data, priveleg_token
 
 router = APIRouter(prefix='/social')
 
 
-@router.post('/users', tags=['Users'])
+@router.post('/users', tags=['Users'], response_model=UsersSchema)
 def add_users(user_data: usr_data_dep, Photo:file_data, user_service:UserService = Depends()): # type: ignore
     return user_service.create_user(user_data, Photo)
 

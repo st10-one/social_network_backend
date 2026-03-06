@@ -32,7 +32,15 @@ class AbstractRepository(ABC):
         raise NotImplemented
 
     @abstractmethod
+    def delete_post():
+        raise NotImplemented
+
+    @abstractmethod
     def add_like():
+        raise NotImplemented
+    
+    @abstractmethod
+    def delete_like():
         raise NotImplemented
 
 
@@ -68,8 +76,11 @@ class SQLRepository(AbstractRepository):
         }
 
     def get_user_name(self, name: str): #get one user
+        pattern = f"{name}%"
+
         try:
-            self.cursor.execute("SELECT first_name, last_name, username FROM Users Where username = ? or first_name = ?", (name, name,))
+            self.cursor.execute("SELECT first_name, last_name, username FROM Users Where username LIKE ? or first_name LIKE ?",
+                                 (pattern, pattern,))
             result = self.cursor.fetchone()
         except sqlite3.Error, TypeError:
             raise HTTPException(404, "not found")
@@ -102,6 +113,7 @@ class SQLRepository(AbstractRepository):
         
     def delete_user(self, user_id:int):
         try:
+            self.cursor.execute(FOREIGN_KEY)
             self.cursor.execute("DELETE FROM Users Where id = ?", (user_id,))
             self.conn.commit()
         except sqlite3.Error:
@@ -121,11 +133,24 @@ class SQLRepository(AbstractRepository):
             self.cursor.execute(FOREIGN_KEY)
             self.cursor.execute("INSERT INTO Posts(user_id, content) VALUES (?,?)", params)
             self.conn.commit()
-            return {"id": data.user_id, "content": data.content}
         except sqlite3.Error, TypeError:
             self.conn.rollback()
             raise HTTPException(400, "bad request")
-        
+
+        return {"id": data.user_id, "content": data.content}
+
+
+    def delete_post(self, user_id:int):
+        try:
+            self.cursor.execute(FOREIGN_KEY)
+            self.cursor.execute("DELETE FROM Posts where user_id = ?", (user_id))
+            self.conn.commit()
+        except sqlite3.Error, TypeError:
+            self.conn.rollback()
+            raise HTTPException(400, "bad request")
+            
+        return {"user_id": user_id}
+
 
 #---------------------------------------- Likes ----------------------------------------#
 
@@ -144,5 +169,23 @@ class SQLRepository(AbstractRepository):
         
         return {
             'user_id': data.user_id,
+            "post_id": data.post_id
+        }
+    
+    def delete_like(self, data:LikesModel) -> LikesModel:
+        params = (
+            data.user_id, data.post_id
+        )
+        
+        try:
+            self.cursor.execute(FOREIGN_KEY)
+            self.cursor.execute("DELETE FROM Likes where user_id = ? and post_id = ?", params)
+            self.conn.commit()
+        except sqlite3.Error, TypeError:
+            self.conn.rollback()
+            raise HTTPException(400, "bad request")
+        
+        return {
+            "uses_id": data.user_id,
             "post_id": data.post_id
         }

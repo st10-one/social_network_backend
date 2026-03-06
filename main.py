@@ -7,8 +7,8 @@ import uvicorn
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
-    #await drop_table()
-    #print("clean table")
+    await drop_table()
+    print("clean table")
     await create_table()
     print("Database is ready for work!")
     yield 
