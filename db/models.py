@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class UsersModel:
     first_name = str
@@ -7,10 +8,12 @@ class UsersModel:
     username = str
     bio = str
 
+
 @dataclass
 class PostModel:
     user_id = int
     content = str
+
 
 @dataclass
 class LikesModel:

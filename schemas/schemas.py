@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from typing import Annotated
 
-
 ids = Annotated[int, Field(ge=0)]
+
 
 class UsersSchema(BaseModel):
     first_name: str
