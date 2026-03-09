@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 from service import UserService
 from schemas import UsersSchema
 
 from dependency import usr_data_dep, file_data, priveleg_token
 
-router = APIRouter(prefix="/social")
+router = APIRouter(prefix="/social/v1")
 
 
 @router.post("/users", tags=["Users"], response_model=UsersSchema)

@@ -3,7 +3,7 @@ from typing import Annotated
 
 from schemas import UsersSchema
 
-from fastapi import Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import Body, Depends, File, Form, HTTPException, UploadFile, status
 
 
 def user_data(
@@ -22,7 +22,7 @@ def sql_conn():
         yield conn
 
 
-def priveleg_token(token: str):
+def priveleg_token(token: str = Body(embed=True)):
     if token != "secret":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     return {"success": True}
