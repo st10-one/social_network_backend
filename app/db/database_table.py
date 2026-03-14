@@ -8,7 +8,7 @@ async def create_table():
     Ми тут створюємо таблицю в базу даних
     """
     async with aiosqlite.connect(
-        f"{path_home}/social_network_backend/database/data.db", check_same_thread=False
+        f"{path_home}/vs_code/social_network_backend/database/data.db", check_same_thread=False
     ) as conn:
         await conn.execute("""
             CREATE TABLE IF NOT EXISTS Users(
@@ -17,7 +17,6 @@ async def create_table():
 	        last_name TEXT,
 	        username TEXT UNIQUE NOT NULL,
 	        bio TEXT(1000) DEFAULT NULL,
-            photo_profil BLOB NOT NULL,
             create_at time DEFAULT CURRENT_TIMESTAMP
     )""")
 
@@ -31,7 +30,7 @@ async def create_table():
 
 async def drop_table():
     async with aiosqlite.connect(
-        f"{path_home}/social_network_backend/database/data.db", check_same_thread=False
+        f"{path_home}/vs_code/social_network_backend/database/data.db", check_same_thread=False
     ) as conn:
         await conn.execute("DROP TABLE IF EXISTS Users")
         await conn.execute("DROP TABLE IF EXISTS Posts")

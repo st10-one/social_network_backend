@@ -1,14 +1,14 @@
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends
 from service import UserService
 from schemas import UsersSchema
 
-from dependency import usr_data_dep, file_data, priveleg_token
+from dependency import UserDep, priveleg_token
 
 router = APIRouter(prefix="/social/v1")
 
 
 @router.post("/users", tags=["Users"], response_model=UsersSchema)
-async def add_users(user_data: usr_data_dep, user_service: UserService = Depends()):  # type: ignore
+async def add_users(user_data: UserDep, user_service: UserService = Depends()):  # type: ignore
     return user_service.create_user(user_data)
 
 
@@ -19,7 +19,7 @@ async def get_one_user(username: str, user_service: UserService = Depends()):
 
 @router.put("/users", tags=["Users"])
 async def update_user_data(
-    user_id: int, new_data: usr_data_dep, user_service: UserService = Depends()
+    user_id: int, new_data: UserDep, user_service: UserService = Depends()
 ) -> UsersSchema:
     return user_service.update_data(user_id, new_data)
 

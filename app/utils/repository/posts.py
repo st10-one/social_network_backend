@@ -10,7 +10,7 @@ from .conf import FOREIGN_KEY, PATH_HOME
 class PostRepository(AbstractPostRepository):
     def __init__(self):
         self.conn = sqlite3.connect(
-            f"{PATH_HOME}/social_network_backend/database/data.db", check_same_thread=False
+            f"{PATH_HOME}/vs_code/social_network_backend/database/data.db", check_same_thread=False
         )
         self.cursor = self.conn.cursor()
     
@@ -32,9 +32,9 @@ class PostRepository(AbstractPostRepository):
     def delete_post(self, user_id: int):
         try:
             self.cursor.execute(FOREIGN_KEY)
-            self.cursor.execute("DELETE FROM Posts where user_id = ?", (user_id))
+            self.cursor.execute("DELETE FROM Posts where user_id = ?", (user_id,))
             self.conn.commit()
-        except sqlite3.Error, TypeError:
+        except sqlite3.Error,TypeError:
             self.conn.rollback()
             raise HTTPException(400, "bad request")
         

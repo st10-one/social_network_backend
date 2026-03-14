@@ -10,7 +10,7 @@ import sqlite3
 class LikeRepository(AbstractLikeRepository):
     def __init__(self):
         self.conn = sqlite3.connect(
-            f"{PATH_HOME}/social_network_backend/database/data.db", check_same_thread=False
+            f"{PATH_HOME}/vs_code/social_network_backend/database/data.db", check_same_thread=False
         )
         self.cursor = self.conn.cursor()
     

@@ -7,7 +7,7 @@ router = APIRouter(prefix="/social/v1")
 
 
 @router.post("/post", tags=["Posts"])
-async def add_posts(content: PostsSchema = Depends(), post_service: PostService = Depends()) -> PostsSchema:
+async def add_posts(content: PostsSchema = Depends(), post_service: PostService = Depends()):
     return post_service.create_post(content=content)
 
 
