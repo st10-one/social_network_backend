@@ -23,7 +23,7 @@ async def create_table():
             "CREATE TABLE IF NOT EXISTS Posts(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, content TEXT, create_at time DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE)"
         )
         await conn.execute(
-            "CREATE TABLE IF NOT EXISTS Likes(user_id integer, post_id integer, create_at time DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE FOREIGN KEY (post_id) REFERENCES Posts(id) ON DELETE CASCADE)"
+            "CREATE TABLE IF NOT EXISTS Likes(user_id integer PRIMARY KEY, post_id integer PRIMARY KEY, create_at time DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE FOREIGN KEY (post_id) REFERENCES Posts(id) ON DELETE CASCADE)"
         )
 
 
