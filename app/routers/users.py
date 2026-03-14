@@ -8,8 +8,8 @@ router = APIRouter(prefix="/social/v1")
 
 
 @router.post("/users", tags=["Users"], response_model=UsersSchema)
-async def add_users(user_data: usr_data_dep, Photo: file_data, user_service: UserService = Depends()):  # type: ignore
-    return user_service.create_user(user_data, Photo)
+async def add_users(user_data: usr_data_dep, user_service: UserService = Depends()):  # type: ignore
+    return user_service.create_user(user_data)
 
 
 @router.get("/users/{username}", tags=["Users"])

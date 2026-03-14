@@ -1,9 +1,9 @@
-import sqlite3
+from fastapi import Body, Form, Depends
+from fastapi import HTTPException, status
+
 from typing import Annotated
 
 from schemas import UsersSchema
-
-from fastapi import Body, Depends, File, Form, HTTPException, UploadFile, status
 
 
 def user_data(
@@ -17,17 +17,10 @@ def user_data(
     )
 
 
-def sql_conn():
-    with sqlite3.connect("/home/stipa/database/data.db") as conn:
-        yield conn
-
-
 def priveleg_token(token: str = Body(embed=True)):
     if token != "secret":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     return {"success": True}
 
 
-sql_dep = Annotated[sqlite3.Connection, Depends(sql_conn)]
-file_data = Annotated[UploadFile, File()]
-usr_data_dep = Annotated[UsersSchema, Depends(user_data)]
+UserDep = Annotated[UsersSchema, Depends(user_data)]

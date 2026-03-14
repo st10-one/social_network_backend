@@ -1,12 +1,14 @@
 import aiosqlite
+import os
 
+path_home = os.path.expanduser("~")
 
 async def create_table():
     """
     Ми тут створюємо таблицю в базу даних
     """
     async with aiosqlite.connect(
-        "/home/stipa/database/data.db", check_same_thread=False
+        f"{path_home}/social_network_backend/database/data.db", check_same_thread=False
     ) as conn:
         await conn.execute("""
             CREATE TABLE IF NOT EXISTS Users(
@@ -23,13 +25,13 @@ async def create_table():
             "CREATE TABLE IF NOT EXISTS Posts(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, content TEXT, create_at time DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE)"
         )
         await conn.execute(
-            "CREATE TABLE IF NOT EXISTS Likes(user_id integer, post_id integer, create_at time DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE FOREIGN KEY (post_id) REFERENCES Posts(id) ON DELETE CASCADE)"
+            "CREATE TABLE IF NOT EXISTS Likes(user_id integer, post_id integer PRIMARY KEY, create_at time DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE FOREIGN KEY (post_id) REFERENCES Posts(id) ON DELETE CASCADE)"
         )
 
 
 async def drop_table():
     async with aiosqlite.connect(
-        "/home/stipa/database/data.db", check_same_thread=False
+        f"{path_home}/social_network_backend/database/data.db", check_same_thread=False
     ) as conn:
         await conn.execute("DROP TABLE IF EXISTS Users")
         await conn.execute("DROP TABLE IF EXISTS Posts")

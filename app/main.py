@@ -25,7 +25,7 @@ app.include_router(likes.router)
 
 @app.get("/", tags=["root"])
 def root():
-    return "Hello!"
+    return {"data": "Hello!"}
 
 
 if __name__ == "__main__":

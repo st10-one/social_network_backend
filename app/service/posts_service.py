@@ -1,10 +1,10 @@
-from utils import SQLRepository
+from utils import posts
 from db import PostModel
 
 
 class PostService:
     def __init__(self):
-        self.repo = SQLRepository()
+        self.repo = posts.PostRepository()
 
     def create_post(self, content: PostModel) -> PostModel:
         return self.repo.add_posts(content)
